@@ -4,7 +4,7 @@
     <title>High-Rated Places Map</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC48nGG95v_4Fc1e9f6Q0yyGpXLEkoRXtI&libraries=places"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe20MxwB4zB4aSugZI1YH96AOFzIgv4Mc&libraries=places"
             async defer></script>
     <script src="leaflet-src.js"></script>
     <script src="Leaflet.GoogleMutant.js"></script>
@@ -14,40 +14,35 @@
 <body>
 <h1>High-Rated Places Map</h1>
 <div id="controls">
-    <table>
-        <tr>
-            <td><label for="radius">Radius (km): </label></td>
-            <td><input type="range" id="radius" name="radius" min="1" max="100" value="15" step="1">
-                <span id="radiusValue">15</span> km
-            </td>
-        </tr>
-        <tr>
-            <td><label for="rating">Minimum Rating (0.0 - 5.0): </label></td>
-            <td><input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="4.0"
-                       placeholder="0.0 - 5.0"></td>
-        </tr>
-        <tr>
-            <td><label for="votes">Minimum Votes: </label></td>
-            <td><input type="number" id="votes" name="votes" min="0" value="10" placeholder="Min votes"></td>
-        </tr>
-        <tr>
-            <td><label for="keyword">Search Keyword: </label></td>
-            <td><input type="text" id="keyword" name="keyword" placeholder="Keyword"></td>
-        </tr>
-        <tr>
-            <td><label for="placeType">Place Type: </label></td>
-            <td><select id="placeType" name="placeType"></select></td>
-        </tr>
-        <tr>
-            <td><label for="combineResults">Combine with the previous results: </label></td>
-            <td><input type="checkbox" id="combineResults" name="combineResults"></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button id="searchBtn">Search</button>
-            </td>
-        </tr>
-    </table>
+    <div class="control-row">
+        <label for="radius">Radius (km): </label>
+        <input type="range" id="radius" name="radius" min="1" max="100" value="15" step="1">
+        <span id="radiusValue">15</span> km
+    </div>
+    <div class="control-row">
+        <label for="rating">Min Rating (0.0 - 5.0): </label>
+        <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="4.0"
+               placeholder="0.0 - 5.0">
+    </div>
+    <div class="control-row">
+        <label for="votes">Min Votes: </label>
+        <input type="number" id="votes" name="votes" min="0" value="10" placeholder="Min votes">
+    </div>
+    <div class="control-row">
+        <label for="keyword">Search Keyword: </label>
+        <input type="text" id="keyword" name="keyword" placeholder="Keyword">
+    </div>
+    <div class="control-row">
+        <label for="placeType">Place Type: </label>
+        <select id="placeType" name="placeType"></select>
+    </div>
+    <div class="control-row">
+        <label for="combineResults">Combine results: </label>
+        <input type="checkbox" id="combineResults" name="combineResults">
+    </div>
+    <div class="control-row">
+        <button id="searchBtn">Search</button>
+    </div>
     <div id="progress" style="display: none;">
         <progress id="progressBar" value="0" max="100"></progress>
     </div>
