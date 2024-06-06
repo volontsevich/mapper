@@ -31,7 +31,9 @@ function initializeMap() {
     let searchCircles = [];
 
     const radiusInput = document.getElementById('radius');
+    const minRatingInput = document.getElementById('rating');
     const radiusValueDisplay = document.getElementById('radiusValue');
+    const ratingValueDisplay = document.getElementById('ratingValue');
 
     // Draw the initial circle with the default radius value
     const drawCircle = () => {
@@ -52,10 +54,15 @@ function initializeMap() {
         radiusValueDisplay.textContent = radiusInput.value;
     };
 
+    const updateRatingValue = () => {
+        ratingValueDisplay.textContent = minRatingInput.value;
+    };
+
     // Initial draw
     drawCircle();
 
     radiusInput.addEventListener('input', drawCircle);
+    minRatingInput.addEventListener('input', updateRatingValue);
 
     // Update circle position when the map is moved
     map.on('moveend', drawCircle);
@@ -66,7 +73,7 @@ function initializeMap() {
         const lng = center.lng;
         const radius = parseInt(radiusInput.value) * 1000;
         const placeType = document.getElementById('placeType').value;
-        const minRating = parseFloat(document.getElementById('rating').value);
+        const minRating = parseFloat(minRatingInput.value);
         const minVotes = parseInt(document.getElementById('votes').value);
         const keyword = document.getElementById('keyword').value;
         const combineResults = document.getElementById('combineResults').checked;
@@ -159,8 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButton.addEventListener('click', () => {
         if (controlsContent.style.display === 'none') {
             controlsContent.style.display = 'block';
+            toggleButton.style.marginBottom = '5px';
         } else {
             controlsContent.style.display = 'none';
+            toggleButton.style.marginBottom = '0px';
         }
     });
 });
