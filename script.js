@@ -25,7 +25,7 @@ function initializeMap() {
     }
 
     map = L.map('map').setView([43.4305294, -80.5587154], 10);
-    L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map);
+    L.gridLayer.googleMutant({ type: 'roadmap' }).addTo(map);
 
     let markers = [];
     let searchCircles = [];
@@ -150,4 +150,17 @@ function initializeMap() {
     loadPlaceTypes();
 }
 
-initializeMap();
+document.addEventListener('DOMContentLoaded', () => {
+    initializeMap();
+
+    const toggleButton = document.getElementById('toggle-controls');
+    const controlsDiv = document.getElementById('controls');
+
+    toggleButton.addEventListener('click', () => {
+        if (controlsDiv.style.display === 'none') {
+            controlsDiv.style.display = 'block';
+        } else {
+            controlsDiv.style.display = 'none';
+        }
+    });
+});

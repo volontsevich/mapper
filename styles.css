@@ -51,7 +51,7 @@ input, select, button {
 /* Media query for mobile devices */
 @media (max-width: 600px) {
     #controls {
-        top: 25px;
+        top: 46px;
         right: 10px;
         left: 50px;
         width: calc(100% - 75px);
