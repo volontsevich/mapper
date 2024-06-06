@@ -13,41 +13,70 @@
 </head>
 <body>
 <h1>High-Rated Places Map</h1>
-<button id="toggle-controls">Show/Hide Controls</button>
 <div id="controls">
-    <div class="control-row">
-        <label for="radius">Radius (km): </label>
-        <input type="range" id="radius" name="radius" min="1" max="100" value="15" step="1">
-        <span id="radiusValue">15</span> km
-    </div>
-    <div class="control-row">
-        <label for="rating">Min Rating (0.0 - 5.0): </label>
-        <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="4.0"
-               placeholder="0.0 - 5.0">
-    </div>
-    <div class="control-row">
-        <label for="votes">Min Votes: </label>
-        <input type="number" id="votes" name="votes" min="0" value="10" placeholder="Min votes">
-    </div>
-    <div class="control-row">
-        <label for="keyword">Search Keyword: </label>
-        <input type="text" id="keyword" name="keyword" placeholder="Keyword">
-    </div>
-    <div class="control-row">
-        <label for="placeType">Place Type: </label>
-        <select id="placeType" name="placeType"></select>
-    </div>
-    <div class="control-row">
-        <label for="combineResults">Combine results: </label>
-        <input type="checkbox" id="combineResults" name="combineResults">
-    </div>
-    <div class="control-row">
-        <button id="searchBtn">Search</button>
-    </div>
-    <div id="progress" style="display: none;">
-        <progress id="progressBar" value="0" max="100"></progress>
+    <button id="toggle-controls">Show/Hide Controls</button>
+    <div id="control-content">
+        <div class="control-item">
+            <div class="control-label">
+                <label for="radius">Radius (<span id="radiusValue">15</span> km): </label>
+            </div>
+            <div class="control-input">
+                <input type="range" id="radius" name="radius" min="1" max="100" value="15" step="1">
+
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-label">
+                <label for="rating">Min Rating (0.0 - 5.0): </label>
+            </div>
+            <div class="control-input">
+                <input type="number" id="rating" name="rating" min="0" max="5" step="0.1" value="4.0"
+                       placeholder="0.0 - 5.0">
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-label">
+                <label for="votes">Min Votes: </label>
+            </div>
+            <div class="control-input">
+                <input type="number" id="votes" name="votes" min="0" value="10" placeholder="Min votes">
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-label">
+                <label for="keyword">Search Keyword: </label>
+            </div>
+            <div class="control-input">
+                <input type="text" id="keyword" name="keyword" placeholder="Keyword">
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-label">
+                <label for="placeType">Place Type: </label>
+            </div>
+            <div class="control-input">
+                <select id="placeType" name="placeType"></select>
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-label">
+                <label for="combineResults">Combine results: </label>
+            </div>
+            <div class="control-input">
+                <input type="checkbox" id="combineResults" name="combineResults">
+            </div>
+        </div>
+        <div class="control-item">
+            <div class="control-input">
+                <button id="searchBtn">Search</button>
+            </div>
+        </div>
+        <div id="progress" style="display: none;">
+            <progress id="progressBar" value="0" max="100"></progress>
+        </div>
     </div>
 </div>
+
 <div id="map"></div>
 
 <script src="script.js"></script>

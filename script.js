@@ -154,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeMap();
 
     const toggleButton = document.getElementById('toggle-controls');
-    const controlsDiv = document.getElementById('controls');
+    const controlsContent = document.getElementById('control-content');
 
     toggleButton.addEventListener('click', () => {
-        if (controlsDiv.style.display === 'none') {
-            controlsDiv.style.display = 'block';
+        if (controlsContent.style.display === 'none') {
+            controlsContent.style.display = 'block';
         } else {
-            controlsDiv.style.display = 'none';
+            controlsContent.style.display = 'none';
         }
     });
 });
