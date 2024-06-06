@@ -35,15 +35,19 @@ body {
     display: flex;
     width: 100%;
     margin-bottom: 4px;
+    align-items: center;
 }
 
 .control-label {
-    flex: 4;
+    flex: 5;
     padding-right: 2px;
 }
 
 .control-input {
-    flex: 3;
+    flex: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 input, select, button {
@@ -82,7 +86,12 @@ select, button {
     }
 
     .control-item {
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+
+    .control-label, .control-input {
         width: 100%;
     }
 
