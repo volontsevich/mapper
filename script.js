@@ -137,10 +137,8 @@ function initializeMap() {
 
             let link;
             if (isMobile()) {
-                // Use intent scheme for Android
                 link = `https://www.google.com/maps/search/?api=1&query=Google&query_place_id=${placeId}`;
             } else {
-                // Default to web link
                 link = `https://www.google.com/maps/place/?q=place_id:${place.place_id}`;
             }
 
