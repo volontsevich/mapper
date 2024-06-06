@@ -1,4 +1,5 @@
 let map;
+let searchCirclePreview;
 
 function isMobile() {
     return /Mobi|Android/i.test(navigator.userAgent);
@@ -28,7 +29,6 @@ function initializeMap() {
 
     let markers = [];
     let searchCircles = [];
-    let searchCirclePreview;
 
     const radiusInput = document.getElementById('radius');
     const radiusValueDisplay = document.getElementById('radiusValue');
@@ -39,7 +39,7 @@ function initializeMap() {
         const radius = parseInt(radiusInput.value) * 1000;
 
         if (searchCirclePreview) {
-            searchCirclePreview.remove();
+            map.removeLayer(searchCirclePreview);
         }
 
         searchCirclePreview = L.circle([center.lat, center.lng], {
