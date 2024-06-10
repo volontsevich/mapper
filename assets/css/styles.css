@@ -90,6 +90,7 @@ textarea.select2-search__field {
 
 button.select2-selection__choice__remove > span {
     display: flex;
+    padding-bottom: 5px !important;
 }
 
 .select2.select2-container.select2-container--default {
