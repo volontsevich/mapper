@@ -25,12 +25,12 @@ async function loadPlaceTypes() {
     }
 }
 
-function initializeMap() {
+function initializeMap(center) {
     if (map != undefined) {
         map.remove(); // Remove the existing map instance
     }
 
-    map = L.map('map').setView([43.4305294, -80.5587154], 12);
+    map = L.map('map').setView(center, 12);
     L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map);
 
     let markers = [];
@@ -213,11 +213,25 @@ function applySearchParams() {
 
     setTimeout(() => {
         document.getElementById('searchBtn').click();
-    }, 1000);
+    }, 100);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    initializeMap();
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('lat') && params.has('lng')) {
+        applySearchParams();
+    } else {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const center = [position.coords.latitude, position.coords.longitude];
+                initializeMap(center);
+            }, () => {
+                initializeMap([43.4305294, -80.5587154]);
+            });
+        } else {
+            initializeMap([43.4305294, -80.5587154]);
+        }
+    }
 
     const toggleButton = document.getElementById('toggle-controls');
     const controlsContent = document.getElementById('control-content');
