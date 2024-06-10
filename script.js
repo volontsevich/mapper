@@ -17,6 +17,12 @@ async function loadPlaceTypes() {
         option.textContent = type.replace('_', ' ');
         placeTypeDropdown.appendChild(option);
     });
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('placeTypes')) {
+        const placeTypesFromParams = params.get('placeTypes').split(',');
+        $('#placeType').val(placeTypesFromParams).trigger('change');
+    }
 }
 
 function initializeMap() {
@@ -25,7 +31,7 @@ function initializeMap() {
     }
 
     map = L.map('map').setView([43.4305294, -80.5587154], 12);
-    L.gridLayer.googleMutant({ type: 'roadmap' }).addTo(map);
+    L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map);
 
     let markers = [];
     let searchCircles = [];
@@ -157,6 +163,57 @@ function initializeMap() {
     loadPlaceTypes();
 }
 
+function generateShareableURL() {
+    const params = new URLSearchParams();
+    const center = map.getCenter();
+    params.append('lat', center.lat);
+    params.append('lng', center.lng);
+    params.append('radius', document.getElementById('radius').value);
+    params.append('placeTypes', $('#placeType').val().join(','));
+    params.append('rating', document.getElementById('rating').value);
+    params.append('votes', document.getElementById('votes').value);
+    params.append('keyword', document.getElementById('keyword').value);
+    params.append('combineResults', document.getElementById('combineResults').checked);
+
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+}
+
+function copyToClipboard(text) {
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.value = text;
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+}
+
+function applySearchParams() {
+    const params = new URLSearchParams(window.location.search);
+    const lat = parseFloat(params.get('lat'));
+    const lng = parseFloat(params.get('lng'));
+    const radius = params.get('radius');
+    const placeTypes = params.get('placeTypes').split(',');
+    const rating = params.get('rating');
+    const votes = params.get('votes');
+    const keyword = params.get('keyword');
+    const combineResults = params.get('combineResults') === 'true';
+
+    map.setView([lat, lng], 12);
+    document.getElementById('radius').value = radius;
+    document.getElementById('rating').value = rating;
+    document.getElementById('votes').value = votes;
+    document.getElementById('keyword').value = keyword;
+    document.getElementById('combineResults').checked = combineResults;
+
+    $('#placeType').one('select2:open', () => {
+        $('#placeType').val(placeTypes).trigger('change');
+    });
+
+    setTimeout(() => {
+        document.getElementById('searchBtn').click();
+    }, 1000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initializeMap();
 
@@ -187,10 +244,20 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             processResults: function (data) {
                 return {
-                    results: data.placeTypes.map(type => ({ id: type, text: type.replace('_', ' ') }))
+                    results: data.placeTypes.map(type => ({id: type, text: type.replace('_', ' ')}))
                 };
             },
             cache: true
         }
     });
+
+    document.getElementById('shareBtn').addEventListener('click', () => {
+        const url = generateShareableURL();
+        copyToClipboard(url);
+        alert('Shareable URL copied to clipboard');
+    });
+
+    if (window.location.search) {
+        applySearchParams();
+    }
 });
