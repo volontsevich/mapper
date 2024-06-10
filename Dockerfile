@@ -7,4 +7,5 @@ RUN pip install --no-cache-dir -r config/requirements.txt
 
 EXPOSE 8080
 
-CMD ["python", "src/server.py"]
+WORKDIR /app/src
+CMD ["python", "server.py"]

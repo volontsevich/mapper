@@ -1,4 +1,4 @@
-import {updateDisplayValues, isMobile} from './utils.js';
+import { updateDisplayValues, isMobile } from './utils.js';
 
 let map;
 let searchCirclePreview;
@@ -11,7 +11,7 @@ export const initializeMap = (center) => {
     }
 
     map = L.map('map').setView(center, 12);
-    L.gridLayer.googleMutant({type: 'roadmap'}).addTo(map);
+    L.gridLayer.googleMutant({ type: 'roadmap' }).addTo(map);
 
     const radiusInput = document.getElementById('radius');
     const minRatingInput = document.getElementById('rating');
@@ -156,3 +156,5 @@ const fetchPage = async (pageUrl, minRating, minVotes, allPlaces) => {
         console.error('Error fetching places:', error);
     }
 };
+
+export { map, searchCircles, markers };

@@ -1,10 +1,15 @@
-import { initializeMap, applySearchParams, handleSearchClick } from './map.js';
-import { loadPlaceTypes } from './placeTypes.js';
-import { getSearchParams, generateShareableURL, copyToClipboard } from './utils.js';
+import {initializeMap, applySearchParams, handleSearchClick} from './map.js';
+import {loadPlaceTypes} from './placeTypes.js';
+import {getSearchParams, generateShareableURL, copyToClipboard} from './utils.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const params = getSearchParams();
+
+    await loadPlaceTypes();
+
     if (params.has('lat') && params.has('lng')) {
+        const center = [parseFloat(params.get('lat')), parseFloat(params.get('lng'))];
+        initializeMap(center);
         applySearchParams();
     } else {
         if (navigator.geolocation) {
@@ -39,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
             url: '/api/placeTypes',
             dataType: 'json',
             delay: 250,
-            data: params => ({ q: params.term }),
+            data: params => ({q: params.term}),
             processResults: data => ({
-                results: data.placeTypes.map(type => ({ id: type, text: type.replace('_', ' ') }))
+                results: data.placeTypes.map(type => ({id: type, text: type.replace('_', ' ')}))
             }),
             cache: true
         }
@@ -53,10 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Shareable URL copied to clipboard');
     });
 
-    if (window.location.search) {
-        applySearchParams();
-    }
-
-    loadPlaceTypes();
     document.getElementById('searchBtn').addEventListener('click', handleSearchClick);
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/assets/service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+        });
+    }
 });

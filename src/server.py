@@ -41,10 +41,18 @@ def get_places():
 @app.route('/api/placeTypes')
 def get_place_types():
     query = request.args.get('q', '').lower().replace(' ', '_')
-    with open('src/placeTypes.json') as f:
+    with open('placeTypes.json') as f:
         place_types = json.load(f)['placeTypes']
     filtered_types = [pt for pt in place_types if query in pt.lower()]
     return jsonify({'placeTypes': filtered_types})
+
+@app.route('/assets/manifest.json')
+def manifest():
+    return send_from_directory('../assets', 'manifest.json')
+
+@app.route('/assets/service-worker.js')
+def service_worker():
+    return send_from_directory('../assets', 'service-worker.js')
 
 @app.route('/')
 def serve_index():

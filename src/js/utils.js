@@ -1,3 +1,4 @@
+import { map } from './map.js';
 export const isMobile = () => /Mobi|Android/i.test(navigator.userAgent);
 
 export const copyToClipboard = (text) => {
@@ -17,6 +18,10 @@ export const updateDisplayValues = () => {
 };
 
 export const generateShareableURL = () => {
+    if (!map) {
+        console.error('Map is not initialized.');
+        return;
+    }
     const params = new URLSearchParams();
     const center = map.getCenter();
     params.append('lat', center.lat);
