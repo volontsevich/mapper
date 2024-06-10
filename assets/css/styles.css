@@ -94,10 +94,6 @@ button.select2-selection__choice__remove > span {
 }
 
 .select2.select2-container.select2-container--default {
-    width: inherit !important;
-}
-
-.select2.select2-container.select2-container--default.select2-container--below {
     width: 100% !important;
 }
 

@@ -2,6 +2,8 @@ import {initializeMap, applySearchParams, handleSearchClick} from './map.js';
 import {loadPlaceTypes} from './placeTypes.js';
 import {getSearchParams, generateShareableURL, copyToClipboard} from './utils.js';
 
+let deferredPrompt;
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = getSearchParams();
 
@@ -71,4 +73,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
         });
     }
+
+    const installBtn = document.getElementById('install');
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.hidden = false;
+
+        installBtn.addEventListener('click', () => {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                deferredPrompt = null;
+                installBtn.hidden = true;
+            });
+        });
+    });
+
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+    });
 });
