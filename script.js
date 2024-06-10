@@ -204,6 +204,8 @@ function applySearchParams() {
     document.getElementById('votes').value = votes;
     document.getElementById('keyword').value = keyword;
     document.getElementById('combineResults').checked = combineResults;
+    document.getElementById('radiusValue').textContent = radius;
+    document.getElementById('ratingValue').textContent = rating;
 
     $('#placeType').one('select2:open', () => {
         $('#placeType').val(placeTypes).trigger('change');
