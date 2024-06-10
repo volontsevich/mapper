@@ -24,7 +24,7 @@ function initializeMap() {
         map.remove(); // Remove the existing map instance
     }
 
-    map = L.map('map').setView([43.4305294, -80.5587154], 10);
+    map = L.map('map').setView([43.4305294, -80.5587154], 12);
     L.gridLayer.googleMutant({ type: 'roadmap' }).addTo(map);
 
     let markers = [];
@@ -72,18 +72,17 @@ function initializeMap() {
         const lat = center.lat;
         const lng = center.lng;
         const radius = parseInt(radiusInput.value) * 1000;
-        const placeType = document.getElementById('placeType').value;
+        const placeTypes = $('#placeType').val();
         const minRating = parseFloat(minRatingInput.value);
         const minVotes = parseInt(document.getElementById('votes').value);
         const keyword = document.getElementById('keyword').value;
         const combineResults = document.getElementById('combineResults').checked;
 
-        fetchPlaces(lat, lng, radius, placeType, minRating, minVotes, keyword, combineResults);
+        fetchPlaces(lat, lng, radius, placeTypes, minRating, minVotes, keyword, combineResults);
     });
 
-    async function fetchPlaces(lat, lng, radius, placeType, minRating, minVotes, keyword, combineResults) {
+    async function fetchPlaces(lat, lng, radius, placeTypes, minRating, minVotes, keyword, combineResults) {
         const location = `${lat},${lng}`;
-        let url = `/api/places?location=${location}&type=${placeType}&radius=${radius}&keyword=${keyword}`;
         let allPlaces = [];
 
         if (!combineResults) {
@@ -104,7 +103,12 @@ function initializeMap() {
         document.getElementById('progress').style.display = 'block';
         document.getElementById('progressBar').value = 0;
 
-        const fetchPage = async (pageUrl) => {
+        for (const placeType of placeTypes) {
+            const url = `/api/places?location=${location}&type=${placeType}&radius=${radius}&keyword=${keyword}`;
+            await fetchPage(url);
+        }
+
+        async function fetchPage(pageUrl) {
             try {
                 const response = await fetch(pageUrl);
                 const data = await response.json();
@@ -121,9 +125,7 @@ function initializeMap() {
             } catch (error) {
                 console.error('Error fetching places:', error);
             }
-        };
-
-        await fetchPage(url);
+        }
 
         allPlaces.forEach(place => {
             const lat = place.geometry.location.lat;
@@ -168,6 +170,27 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             controlsContent.style.display = 'none';
             toggleButton.style.marginBottom = '0px';
+        }
+    });
+
+    $('#placeType').select2({
+        placeholder: 'Select Place Types',
+        multiple: true,
+        ajax: {
+            url: '/api/placeTypes',
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.placeTypes.map(type => ({ id: type, text: type.replace('_', ' ') }))
+                };
+            },
+            cache: true
         }
     });
 });

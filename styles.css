@@ -18,17 +18,20 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
     z-index: 1000;
-    max-width: 350px;
+    max-width: 320px;
     width: calc(100% - 20px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 14px;
 }
 
 #toggle-controls {
     align-self: flex-end;
     margin-bottom: 5px;
-    width: 100%;
+    width: 20px;
+    cursor: pointer;
+    font-size: 12px;
 }
 
 .control-item {
@@ -68,13 +71,40 @@ select, button {
     width: 100%;
 }
 
+.select2-selection__choice__display {
+    font-size: 12px;
+}
+
+.select2-selection.select2-selection--multiple {
+    padding-bottom: 0px !important;
+}
+
+textarea.select2-search__field {
+    font-size: 12px !important;
+    padding-top: 3px !important;
+}
+
+.select2-results__option {
+    font-size: 12px;
+}
+
+button.select2-selection__choice__remove > span {
+    display: flex;
+}
+
+.select2.select2-container.select2-container--default {
+    width: inherit !important;
+
+}
+
 /* Media query for mobile devices */
 @media (max-width: 600px) {
     #controls {
-        top: 25px;
-        right: 15px;
-        width: calc(100% - 110px);
-        max-width: 300px;
+        bottom: 15px;
+        top: unset;
+        left: 10px;
+        width: calc(100% - 30px);
+        max-width: unset;
         padding: 5px;
         font-size: 10px;
     }
@@ -101,5 +131,9 @@ select, button {
 
     #control-content {
         width: 100%;
+    }
+
+    #toggle-controls {
+        width: 10px;
     }
 }

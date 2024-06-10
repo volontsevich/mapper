@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_from_directory
 import requests
 import os
+import json
 
 app = Flask(__name__)
 
@@ -39,7 +40,11 @@ def get_places():
 
 @app.route('/api/placeTypes')
 def get_place_types():
-    return send_from_directory('.', 'placeTypes.json')
+    query = request.args.get('q', '').lower().replace(' ', '_')
+    with open('placeTypes.json') as f:
+        place_types = json.load(f)['placeTypes']
+    filtered_types = [pt for pt in place_types if query in pt.lower()]
+    return jsonify({'placeTypes': filtered_types})
 
 @app.route('/')
 def serve_index():
