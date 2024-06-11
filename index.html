@@ -4,16 +4,27 @@
     <title>High-Rated Places Map</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe20MxwB4zB4aSugZI1YH96AOFzIgv4Mc&libraries=places"
-            async defer></script>
-    <script src="assets/js/leaflet-src.js"></script>
-    <script src="assets/js/Leaflet.GoogleMutant.js"></script>
+    <meta name="description"
+          content="High-Rated Places Map helps you find the best-rated places around you using Google Maps. Search by radius, rating, votes, and keywords.">
+    <link rel="preconnect" href="https://maps.googleapis.com">
+    <link rel="preconnect" href="https://maps.gstatic.com">
+    <link rel="preload" href="assets/css/leaflet.css" as="style">
+    <link rel="preload" href="assets/css/styles.css" as="style">
+    <link rel="preload" href="assets/css/select2.min.css" as="style">
     <link rel="stylesheet" href="assets/css/leaflet.css"/>
     <link rel="stylesheet" href="assets/css/styles.css"/>
     <link rel="stylesheet" href="assets/css/select2.min.css"/>
     <link rel="manifest" href="assets/manifest.json">
     <link rel="icon" href="favicon.ico">
     <meta name="theme-color" content="#3f51b5">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe20MxwB4zB4aSugZI1YH96AOFzIgv4Mc&libraries=places"
+            async
+            defer></script>
+    <script src="assets/js/leaflet-src.js" defer></script>
+    <script src="assets/js/Leaflet.GoogleMutant.js" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+    <script type="module" src="src/js/main.js" defer></script>
 </head>
 <body>
 <h1>High-Rated Places Map</h1>
@@ -84,8 +95,5 @@
 
 <div id="map" role="region" aria-label="Map"></div>
 <button id="install" hidden aria-label="Install App">Install</button>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script type="module" src="src/js/main.js"></script>
 </body>
 </html>

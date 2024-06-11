@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request, send_from_directory
+from flask_compress import Compress
 import requests
 import os
 import json
 
 app = Flask(__name__, static_folder='../assets', static_url_path='/assets')
+Compress(app)
 
 API_KEY = os.getenv('GOOGLE_PLACES_API_KEY', 'AIzaSyC48nGG95v_4Fc1e9f6Q0yyGpXLEkoRXtI')
 PORT = int(os.environ.get('PORT', 8080))
