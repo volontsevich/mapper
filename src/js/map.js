@@ -4,6 +4,7 @@ let map;
 let searchCirclePreview;
 let markers = [];
 let searchCircles = [];
+const API_KEY = 'AIzaSyC48nGG95v_4Fc1e9f6Q0yyGpXLEkoRXtI';
 
 export const initializeMap = (center) => {
     if (map) {
@@ -13,6 +14,10 @@ export const initializeMap = (center) => {
     map = L.map('map').setView(center, 12);
     L.gridLayer.googleMutant({ type: 'roadmap' }).addTo(map);
 
+    setupEventListeners();
+};
+
+const setupEventListeners = () => {
     const radiusInput = document.getElementById('radius');
     const minRatingInput = document.getElementById('rating');
 
@@ -40,6 +45,18 @@ export const initializeMap = (center) => {
     minRatingInput.addEventListener('input', updateDisplayValues);
 
     map.on('moveend', drawCircle);
+    map.on('popupopen', handlePopupOpen);
+
+    drawCircle();
+};
+
+const handlePopupOpen = async (event) => {
+    const marker = event.popup._source;
+    const placeId = marker.options.placeId;
+    const placeDetails = await fetchPlaceDetails(placeId);
+    if (placeDetails && placeDetails.result && placeDetails.result.photos) {
+        showPhotosCarousel(placeDetails.result.photos);
+    }
 };
 
 export const applySearchParams = () => {
@@ -128,7 +145,7 @@ const fetchPlaces = async (lat, lng, radius, placeTypes, minRating, minVotes, ke
             link = `https://www.google.com/maps/place/?q=place_id:${place.place_id}`;
         }
 
-        const marker = L.marker([lat, lng])
+        const marker = L.marker([lat, lng], { placeId })
             .addTo(map)
             .bindPopup(`<b>${name}</b><br>Rating: ${rating}<br>Reviews: ${reviews}<br><a href="${link}" target="_blank">View on Google Maps</a>`);
         markers.push(marker);
@@ -155,6 +172,59 @@ const fetchPage = async (pageUrl, minRating, minVotes, allPlaces) => {
     } catch (error) {
         console.error('Error fetching places:', error);
     }
+};
+
+const fetchPlaceDetails = async (placeId) => {
+    const response = await fetch(`/api/placeDetails?place_id=${placeId}`);
+    if (!response.ok) {
+        console.error('Failed to fetch place details');
+        return null;
+    }
+    return response.json();
+};
+
+const showPhotosCarousel = (photos) => {
+    const carouselContainer = document.getElementById('carousel-container');
+    const carouselInner = document.getElementById('carousel-inner');
+    carouselInner.innerHTML = ''; // Clear any existing content
+
+    photos.forEach((photo, index) => {
+        const imgElement = document.createElement('img');
+        imgElement.src = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${API_KEY}`;
+        imgElement.alt = `Photo ${index + 1}`;
+        carouselInner.appendChild(imgElement);
+    });
+
+    carouselContainer.style.display = 'block';
+    initializeCarousel();
+};
+
+const initializeCarousel = () => {
+    let currentIndex = 0;
+    const images = document.querySelectorAll('#carousel-inner img');
+    const totalImages = images.length;
+
+    const showImage = (index) => {
+        images.forEach((img, i) => {
+            img.style.display = i === index ? 'block' : 'none';
+        });
+    };
+
+    document.getElementById('carousel-prev').addEventListener('click', () => {
+        currentIndex = (currentIndex === 0) ? totalImages - 1 : currentIndex - 1;
+        showImage(currentIndex);
+    });
+
+    document.getElementById('carousel-next').addEventListener('click', () => {
+        currentIndex = (currentIndex === totalImages - 1) ? 0 : currentIndex + 1;
+        showImage(currentIndex);
+    });
+
+    document.getElementById('carousel-close').addEventListener('click', () => {
+        document.getElementById('carousel-container').style.display = 'none';
+    });
+
+    showImage(currentIndex); // Show the first image initially
 };
 
 export { map, searchCircles, markers };

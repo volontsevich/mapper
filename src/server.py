@@ -24,6 +24,14 @@ def build_places_url(location, radius, type, keyword, pagetoken=None):
 
     return requests.Request('GET', base_url, params=params).prepare().url
 
+def build_place_details_url(place_id):
+    base_url = 'https://maps.googleapis.com/maps/api/place/details/json'
+    params = {
+        'key': API_KEY,
+        'place_id': place_id
+    }
+    return requests.Request('GET', base_url, params=params).prepare().url
+
 @app.route('/api/places')
 def get_places():
     location = request.args.get('location')
@@ -40,6 +48,17 @@ def get_places():
 
     return jsonify(response.json())
 
+@app.route('/api/placeDetails')
+def get_place_details():
+    place_id = request.args.get('place_id')
+    url = build_place_details_url(place_id)
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return jsonify({'error': 'Failed to fetch place details'}), response.status_code
+
+    return jsonify(response.json())
+
 @app.route('/api/placeTypes')
 def get_place_types():
     query = request.args.get('q', '').lower().replace(' ', '_')
@@ -50,11 +69,11 @@ def get_place_types():
 
 @app.route('/assets/manifest.json')
 def manifest():
-    return send_from_directory('../assets', 'manifest.json')
+    return send_from_directory(app.static_folder, 'manifest.json')
 
 @app.route('/assets/service-worker.js')
 def service_worker():
-    return send_from_directory('../assets', 'service-worker.js')
+    return send_from_directory(app.static_folder, 'service-worker.js')
 
 @app.route('/')
 def serve_index():
