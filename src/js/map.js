@@ -186,7 +186,7 @@ const fetchPlaceDetails = async (placeId) => {
 const showPhotosCarousel = (photos) => {
     const carouselContainer = document.getElementById('carousel-container');
     const carouselInner = document.getElementById('carousel-inner');
-    carouselInner.innerHTML = ''; // Clear any existing content
+    carouselInner.innerHTML = '';
 
     photos.forEach((photo, index) => {
         const imgElement = document.createElement('img');
@@ -195,7 +195,7 @@ const showPhotosCarousel = (photos) => {
         carouselInner.appendChild(imgElement);
     });
 
-    carouselContainer.style.display = 'block';
+    carouselContainer.style.display = 'flex';
     initializeCarousel();
 };
 
@@ -224,7 +224,7 @@ const initializeCarousel = () => {
         document.getElementById('carousel-container').style.display = 'none';
     });
 
-    showImage(currentIndex); // Show the first image initially
+    showImage(currentIndex);
 };
 
 export { map, searchCircles, markers };
